@@ -1,0 +1,32 @@
+// VerilogA for EEMF6324, solarcell, veriloga
+// Engineer: Jeonghwan Kim
+// Institution: The University of Texas at Dallas
+// Date: Apr 11 2023
+
+`include "constants.vams"
+`include "disciplines.vams"
+
+`define	P__Q	 1.6021918e-19			// q : electron charge in Coulomb
+`define	P__K	 1.3806226e-23			// k : Boltzmann's constant in J/K
+
+module solarcell(Ap,Bn);
+
+inout Ap,Bn;
+electrical Ap,Bn;
+
+parameter real T = 300;
+parameter real Iph = -150e-3;
+parameter real I0 = 3.81e-7;
+parameter real eta = 1.5;
+
+real Vpn;
+
+analog begin
+
+Vpn = V(Ap,Bn);
+I(Ap,Bn) <+ Iph + I0 * (exp((`P__Q * Vpn)/(eta*T*`P__K))- 1);
+
+
+end
+
+endmodule
